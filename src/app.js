@@ -10,7 +10,7 @@ import { errorHandler, notFound } from "./middleware/errors.js";
 
 export function createApp() {
   const app = express();
-  const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+  const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173,http://127.0.0.1:5173";
   app.disable("x-powered-by");
   app.use(helmet());
   app.use(cors({ origin: allowedOrigin === "*" ? true : allowedOrigin.split(",").map(v => v.trim()) }));

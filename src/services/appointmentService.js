@@ -1,13 +1,6 @@
 import { prisma } from "../database/prisma.js";
 import { AppError } from "../middleware/errors.js";
 
-function toUtc(date, time) {
-  const start = new Date(`${date}T${time}:00Z`);
-  if (Number.isNaN(start.getTime())) throw new AppError(422, "Invalid appointment date or time");
-  const end = new Date(start.getTime() + 30 * 60 * 1000);
-  return { start, end };
-}
-
 export async function createAppointment(input) {
   const doctor = await prisma.doctor.findUnique({ where: { id: input.doctorId } });
   if (!doctor) throw new AppError(404, "Doctor not found");
@@ -49,7 +42,9 @@ export async function updateAppointment(id, input) {
 
   const start = new Date(`${input.appointmentDate}T${input.startTime}:00Z`);
   const end = new Date(start.getTime() + input.duration * 60 * 1000);
-  if (start <= new Date()) throw new AppError(422, "Appointments must be scheduled in the future");
+  if (existing.status !== "COMPLETED" && existing.status !== "CANCELLED" && start <= new Date()) {
+    throw new AppError(422, "Appointments must be scheduled in the future");
+  }
 
   return prisma.$transaction(async (tx) => {
     const conflict = await tx.appointment.findFirst({

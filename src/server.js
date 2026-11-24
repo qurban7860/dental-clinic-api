@@ -2,6 +2,11 @@ import "dotenv/config";
 import { createApp } from "./app.js";
 import { prisma } from "./database/prisma.js";
 
+if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL is required");
+  process.exit(1);
+}
+
 const port = Number(process.env.PORT) || 5000;
 const server = createApp().listen(port, () => console.log(`API listening on port ${port}`));
 
