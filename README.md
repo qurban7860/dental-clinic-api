@@ -42,4 +42,4 @@ The included `render.yaml` deploys the Node service. Add `DATABASE_URL` and `CLI
 
 ## Vercel
 
-Import this repository into Vercel with the repository root as the project root. Vercel's Express runtime serves the exported app in `src/app.js`; routes remain under `/api`. Configure `DATABASE_URL` with the rotated Supabase connection URL and `CLIENT_URL` with the exact deployed frontend origin in Vercel Environment Variables. Run `npx prisma migrate deploy` from a trusted local shell after setting the rotated database URL, before directing production traffic. Do not run migrations for Preview deployments against the production database.
+Import this repository into Vercel with the repository root as the project root. Vercel's Express runtime serves the exported app in `src/app.js`; routes remain under `/api`. Configure `DATABASE_URL` with the rotated Supabase connection URL.
